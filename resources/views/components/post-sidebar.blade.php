@@ -174,7 +174,27 @@
                 </svg>
                 Media Sosial
             </h3>
-            <x-social-media-links />
+            @php
+                // Ambil data sosmed jika belum ada
+                $footerFacebook = \App\Models\InfoText::firstWhere('key', 'footer_facebook_url');
+                $footerInstagram = \App\Models\InfoText::firstWhere('key', 'footer_instagram_url');
+                $footerTwitter = \App\Models\InfoText::firstWhere('key', 'footer_twitter_url');
+                $footerYoutube = \App\Models\InfoText::firstWhere('key', 'footer_youtube_url');
+                $footerTiktok = \App\Models\InfoText::firstWhere('key', 'footer_tiktok_url');
+
+                $facebookUrlValue = ($footerFacebook && $footerFacebook->value) ? $footerFacebook->value : route('social-media-unavailable');
+                $instagramUrlValue = ($footerInstagram && $footerInstagram->value) ? $footerInstagram->value : route('social-media-unavailable');
+                $twitterUrlValue = ($footerTwitter && $footerTwitter->value) ? $footerTwitter->value : route('social-media-unavailable');
+                $youtubeUrlValue = ($footerYoutube && $footerYoutube->value) ? $footerYoutube->value : route('social-media-unavailable');
+                $tiktokUrlValue = ($footerTiktok && $footerTiktok->value) ? $footerTiktok->value : route('social-media-unavailable');
+            @endphp
+            @include('web.components.social-media-links', [
+                'facebookUrlValue' => $facebookUrlValue,
+                'instagramUrlValue' => $instagramUrlValue,
+                'youtubeUrlValue' => $youtubeUrlValue,
+                'twitterUrlValue' => $twitterUrlValue,
+                'tiktokUrlValue' => $tiktokUrlValue
+            ])
         </div>
     @endif
 </div>
